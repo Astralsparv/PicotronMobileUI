@@ -1,6 +1,8 @@
 /*
 Developed by Astralsparv
-astralsparv.neocities.org
+https://astralsparv.neocities.org
+Assisted by vilet918
+https://viletverse.nekoweb.org/
 */
 
 var JOYSTICK_DIV = null;
@@ -563,3 +565,4 @@ function p8_update_layout()
     requestAnimationFrame(p8_update_layout);
 
 }
+
