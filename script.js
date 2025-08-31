@@ -2,7 +2,7 @@
 Developed by Astralsparv
 astralsparv.neocities.org
 */
-// Global joystick container
+
 var JOYSTICK_DIV = null;
 
 function __init_joystick_div() {
@@ -21,11 +21,10 @@ function __init_joystick_div() {
     div_style.borderWidth = '0';
     div_style.overflow = 'hidden';
     div_style.zIndex = '10000';
-    div_style.pointerEvents = 'none'; // so you can click other UI
+    div_style.pointerEvents = 'none';
     document.body.appendChild(JOYSTICK_DIV);
 }
 
-// Joystick class
 var JoyStick = function(attrs) {
     this.radius = attrs.radius || 50;
     this.inner_radius = attrs.inner_radius || this.radius / 2;
@@ -52,7 +51,7 @@ var JoyStick = function(attrs) {
     this.__bind_events();
 };
 
-// Direction helpers
+
 JoyStick.prototype.__is_up = function(dx, dy) {
     return dy < 0 && Math.abs(dx) <= 2 * Math.abs(dy);
 };
@@ -66,16 +65,12 @@ JoyStick.prototype.__is_right = function(dx, dy) {
     return dx > 0 && Math.abs(dy) <= 2 * Math.abs(dx);
 };
 
-// Check if point is inside joystick base
 JoyStick.prototype.__is_inside = function(px, py) {
     var dx = px - this.x;
     var dy = py - this.y;
     return Math.sqrt(dx * dx + dy * dy) <= this.radius;
 };
-
-// Create visual joystick
 JoyStick.prototype.__create_visuals = function() {
-    // Base
     this.base = document.createElement('span');
     this.base.id = this.id;
     var s = this.base.style;
@@ -98,7 +93,6 @@ JoyStick.prototype.__create_visuals = function() {
     s.borderStyle = 'solid';
     this.div.appendChild(this.base);
 
-    // Control knob
     this.control = document.createElement('span');
     s = this.control.style;
     s.pointerEvents = 'auto';
@@ -129,14 +123,12 @@ JoyStick.prototype.updatePosition = function() {
     this.x = rect.left + rect.width / 2;  // center x
     this.y = rect.top + rect.height / 2;  // center y
 
-    // Reset control knob only if joystick not active
     if (!this.active) {
         this.control.style.left = this.x - this.inner_radius + 'px';
         this.control.style.top  = this.y - this.inner_radius + 'px';
     }
 };
 
-// Bind events
 JoyStick.prototype.__bind_events = function() {
     var self = this;
 
@@ -175,15 +167,12 @@ JoyStick.prototype.__bind_events = function() {
             clampedY = Math.sin(angle) * maxDist;
         }
 
-        // Move visual knob
         self.control.style.left = self.x + clampedX - self.inner_radius + 'px';
         self.control.style.top = self.y + clampedY - self.inner_radius + 'px';
 
-        // Normalized values -1 to 1
         self.normX = Math.max(-1, Math.min(1, dx / maxDist));
         self.normY = Math.max(-1, Math.min(1, dy / maxDist));
 
-        // Direction flags
         self.up = self.__is_up(dx, dy);
         self.down = self.__is_down(dx, dy);
         self.left = self.__is_left(dx, dy);
@@ -198,7 +187,6 @@ JoyStick.prototype.__bind_events = function() {
         if (!self.active) return;
         self.active = false;
 
-        // Reset joystick
         self.left = self.right = self.up = self.down = false;
         self.normX = self.normY = 0;
         self.control.style.left = self.x - self.inner_radius + 'px';
@@ -209,7 +197,6 @@ JoyStick.prototype.__bind_events = function() {
         }
     }
 
-    // Bind to document to capture movements outside joystick
     document.addEventListener('touchstart', touch_start);
     document.addEventListener('touchmove', touch_move);
     document.addEventListener('touchend', touch_end);
@@ -574,4 +561,5 @@ function p8_update_layout()
         p8_container.style.paddingTop = 0;
     }
     requestAnimationFrame(p8_update_layout);
+
 }
